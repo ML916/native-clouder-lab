@@ -1,0 +1,63 @@
+---
+receivers:
+
+  otlp:
+    protocols:
+      grpc:
+      http:
+        auth:
+          authenticator: basicauth
+
+exporters:
+ 
+  logging:
+    loglevel: debug
+    sampling_initial: 5
+    sampling_thereafter: 200
+
+  googlecloud:
+    project: ${GCP_PROJECT}
+
+  otlphttp:
+    endpoint: ${XML_OTEL_COLLECTOR_URL}
+    headers:
+      "Authorization": "Basic bzExeTRldmVyOm8xMXk0ZXZlcg=="
+
+  sapm:
+    access_token_passthrough: true
+    endpoint: "https://ingest.eu0.signalfx.com/v2/trace"
+
+processors:
+
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 50
+    spike_limit_percentage: 30
+
+  batch:
+
+  resource:
+    attributes:
+    - key: com.splunk.signalfx.access_token
+      value: ${SFX_INGEST_TOKEN}
+      action: insert
+
+extensions:
+  health_check:
+  memory_ballast:
+    size_in_percentage: 40
+  basicauth:
+    htpasswd: 
+      inline: |
+        o11y4ever:o11y4ever
+
+service:
+
+  extensions: [health_check, basicauth]
+
+  pipelines:
+
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, resource, batch]
+      exporters: [logging, googlecloud, otlphttp, sapm]

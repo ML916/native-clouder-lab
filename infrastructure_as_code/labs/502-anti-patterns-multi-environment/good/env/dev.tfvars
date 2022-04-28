@@ -1,0 +1,1 @@
+bucket-name = "my-awesome-bucket-dev"

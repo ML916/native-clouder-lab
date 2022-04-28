@@ -1,9 +1,0 @@
-steps:
-
-# Build the container image
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'europe-west4-docker.pkg.dev/$PROJECT_ID/native-clouders/$TRIGGER_NAME-jsonservice:latest', '-f', 'Dockerfile.jsonservice', '.']
-
-# Push the container image to Container Registry
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'europe-west4-docker.pkg.dev/$PROJECT_ID/native-clouders/$TRIGGER_NAME-jsonservice']

@@ -1,1 +1,0 @@
-bucket-name = "my-awesome-bucket-stage"

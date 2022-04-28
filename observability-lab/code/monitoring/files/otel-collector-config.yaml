@@ -1,2 +1,0 @@
-# TODO configure the receivers and exporters.
-# Use otlp over http as the receiver and zipkin as the exporter

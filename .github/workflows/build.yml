@@ -1,0 +1,17 @@
+name: My workflow
+on:
+  push: 
+    branches: main
+
+jobs:
+  build-image:
+    name: Build Container Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Build Image
+        run: docker build -t ${{ github.event.repository.name }}:latest .

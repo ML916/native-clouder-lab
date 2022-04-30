@@ -16,7 +16,17 @@ jobs:
 
       - name: Build Image
         run: docker build -t ${{ github.event.repository.name }}:latest .
-        
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ github.event.repository.name }}:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.0.0
         with:

@@ -16,6 +16,13 @@ jobs:
 
       - name: Build Image
         run: docker build -t ${{ github.event.repository.name }}:latest .
+        
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          path: -t ${{ github.event.repository.name }}:latest .
+          # The desired behavior if no files are found using the provided path.
+          if-no-files-found: error
 
   unit-tests:
     name: Unit Tests
